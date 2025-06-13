@@ -1,0 +1,35 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies and vcpkg
+        run: |
+          sudo apt update
+          sudo apt install -y cmake ninja-build g++ python3 python3-pip
+          pip3 install numpy matplotlib
+
+          git clone https://github.com/microsoft/vcpkg.git
+          ./vcpkg/bootstrap-vcpkg.sh
+
+          ./vcpkg/vcpkg install gtest nlohmann-json eigen3
+
+      - name: Configure CMake with vcpkg toolchain
+        run: |
+          cmake -B build -G Ninja -DCMAKE_CXX_STANDARD=20 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Run Tests
+        run: cd build && ctest --output-on-failure

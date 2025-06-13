@@ -20,7 +20,7 @@ def plot_convergence(df, csv_path, output_path=None):
             if sub.empty:
                 continue
             if sub['fval'].max() > MAX_FVAL:
-                print(f"⚠️  Warning: Possible divergence in {method}, lr={lr}")
+                print(f"Warning: Possible divergence in {method}, lr={lr}")
             sub = sub[sub['fval'] < MAX_FVAL]
             if sub.empty:
                 continue
@@ -35,7 +35,7 @@ def plot_convergence(df, csv_path, output_path=None):
 
     plt.tight_layout()
     plt.savefig(output_path, bbox_inches='tight')
-    print(f"✅ Saved combined plot to {output_path}")
+    print(f"Saved combined plot to {output_path}")
     plt.close()
 
 
@@ -50,7 +50,7 @@ def plot_per_method(df, csv_path):
             if sub.empty:
                 continue
             if sub['fval'].max() > MAX_FVAL:
-                print(f"⚠️  Warning: Possible divergence in {method}, lr={lr}")
+                print(f"Warning: Possible divergence in {method}, lr={lr}")
             sub = sub[sub['fval'] < MAX_FVAL]
             if sub.empty:
                 continue
@@ -66,7 +66,7 @@ def plot_per_method(df, csv_path):
         out_file = os.path.join(os.path.dirname(csv_path), f"convergence_{method}.png")
         plt.tight_layout()
         plt.savefig(out_file, bbox_inches='tight')
-        print(f"✅ Saved per-method plot to {out_file}")
+        print(f"Saved per-method plot to {out_file}")
         plt.close()
 
 
